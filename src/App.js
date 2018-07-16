@@ -18,10 +18,17 @@ const list = [{
   objectID: 1,
 }]
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      list: list,
+    }
+  }
   render() {
     return (
       <div className="App">
-        {list.map(item => {
+        {this.state.list.map(item => {
           return (
             <div key={item.objectID}>
               <span>
