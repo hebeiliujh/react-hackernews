@@ -17,17 +17,34 @@ const list = [{
   points: 2,
   objectID: 1,
 }]
+
+// 高阶函数 条件过滤列表 ES5
+// function isSearched(searchTerm) {
+//   return function(item) {
+//     return item.title.toLowerCase().includes(searchTerm.toLowerCase());
+//   }
+// }
+
+// 高阶函数 条件过滤列表 ES5
+const isSearched = searchTerm => item => 
+  item.title.toLowerCase().includes(searchTerm.toLowerCase());
+
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       list,
+      searchTerm: '',
     }
 
+    this.onSearchChange = this.onSearchChange.bind(this);
     this.onDismiss = this.onDismiss.bind(this);
   }
 
+  onSearchChange(event) {
+    this.setState({ searchTerm: event.target.value });
+  }
   onDismiss(id) {
     const isNotId = item => item.objectID !== id;
     const updataList = this.state.list.filter(isNotId);
@@ -37,7 +54,13 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        {this.state.list.map(item => {
+        <form>
+          <input
+            type="text"
+            onChange={this.onSearchChange}
+          />
+        </form>
+        {this.state.list.filter(isSearched(this.state.searchTerm)).map(item => {
           return (
             <div key={item.objectID}>
               <span>
